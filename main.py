@@ -12,6 +12,13 @@ class User(BaseModel):
     cellphone: Optional[str]
 
 
+class Location(BaseModel):
+    city: str
+    state: str
+    country: str
+    address: str
+
+
 @app.get("/")
 def home(string) -> Dict:
     """Home API"""
@@ -60,3 +67,19 @@ def user_detail_by_id(
         )
 ):
     return {user_id: "It exists!"}
+
+
+@app.put("/user/{user_id}")
+def user_update(
+        user_id: int = Path(
+            ...,
+            title="User id",
+            description="This is the user id field",
+            gt=0
+        ),
+        user: User = Body(...),
+        location: Location = Body(...)
+):
+    results = user.dict()
+    results.update(location.dict())
+    return results
