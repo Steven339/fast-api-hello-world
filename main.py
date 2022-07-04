@@ -2,7 +2,7 @@ from enum import Enum
 from typing import Dict, Optional
 
 from fastapi import FastAPI, Body, Query, Path
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, EmailStr
 
 app = FastAPI()
 
@@ -13,10 +13,8 @@ class Country(Enum):
 
 
 class User(BaseModel):
-    email: str = Field(
+    email: EmailStr = Field(
         ...,
-        min_length=5,
-        max_length=50,
         title="User email",
         description="This is the user email. It's between 5 and 50 characters."
     )
