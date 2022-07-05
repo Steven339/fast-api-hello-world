@@ -8,36 +8,51 @@ app = FastAPI()
 
 
 class Country(Enum):
-    colombia = "COP"
-    venezuela = "VEN"
+    COLOMBIA = "COP"
+    VENEZUELA = "VEN"
 
 
 class User(BaseModel):
     email: EmailStr = Field(
         ...,
         title="User email",
-        description="This is the user email. It's between 5 and 50 characters."
+        description="This is the user email. It's between 5 and 50 characters.",
+        example="prueba@prueba.com"
     )
     password: str = Field(
         ...,
         min_length=6,
         title="User password",
-        description="This is the user password. Min 6 characters"
+        description="This is the user password. Min 6 characters",
+        example="asd123456"
     )
     cellphone: Optional[str] = Field(
         default=None,
         min_length=10,
         max_length=10,
         title="User cellphone",
-        description="This is the user password. Min 10 characters"
+        description="This is the user password. Min 10 characters",
+        example="000000000"
     )
 
 
 class Location(BaseModel):
-    city: str = Field(...)
-    state: str = Field(...)
-    country: Country = Field(...)
-    address: str = Field(...)
+    city: str = Field(
+        ...,
+        example="Bogotá DC"
+    )
+    state: str = Field(
+        ...,
+        example="Cundinamarca"
+    )
+    country: Country = Field(
+        ...,
+        example=Country.COLOMBIA
+    )
+    address: str = Field(
+        ...,
+        example="Calle falsa 123"
+    )
 
 
 @app.get("/")
@@ -47,7 +62,9 @@ def home(string) -> Dict:
 
 
 @app.post("/user/create")
-def user_create(user: User = Body(...)):
+def user_create(user: User = Body(
+    ...
+)):
     return user
 
 
